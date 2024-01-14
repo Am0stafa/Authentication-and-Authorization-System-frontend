@@ -53,7 +53,7 @@ const Login = () => {
       } else if (err.response?.status === 400) {
         setErrMsg("Missing Username or Password");
       } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
+        setErrMsg("Wrong email or password");
       } else {
         setErrMsg("Login Failed");
       }
@@ -110,7 +110,7 @@ const Login = () => {
             checked={persist}
           />
           <label htmlFor="persist">
-            Trust This Device (which disabled persist login)
+            Stay logged in for 30 days (which disabled persist login)
           </label>
         </div>
       </form>

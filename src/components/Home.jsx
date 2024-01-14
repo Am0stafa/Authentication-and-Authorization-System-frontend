@@ -26,7 +26,7 @@ const Home = () => {
       try {
         const { data } = await axiosPrivate.get("/users/me");
         setUser(data);
-        // console.log(user);
+        console.log(user.profilePic);
       } catch (err) {
         console.log(err);
       }
@@ -47,12 +47,12 @@ const Home = () => {
     right: '10px', // Adjust positioning as needed
   };
 
-
+// 
   return (
     <section style={{ position: 'relative' }}> {/* Add relative positioning to the section */}
       <Link to="/profile" onClick={goToProfile} style={{ textDecoration: 'none' }}>
         <img
-          src={user.profilePic}
+          src={`http://localhost:8081/uploads/${user.profilePic}`}
           alt="User"
           style={userProfileStyle}
         />
