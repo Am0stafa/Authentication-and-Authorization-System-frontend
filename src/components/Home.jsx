@@ -26,7 +26,7 @@ const Home = () => {
       try {
         const { data } = await axiosPrivate.get("/users/me");
         setUser(data);
-        console.log(user.profilePic);
+        // console.log(user.profilePic);
       } catch (err) {
         console.log(err);
       }
@@ -52,7 +52,7 @@ const Home = () => {
     <section style={{ position: 'relative' }}> {/* Add relative positioning to the section */}
       <Link to="/profile" onClick={goToProfile} style={{ textDecoration: 'none' }}>
         <img
-          src={`http://localhost:8081/uploads/${user.profilePic}`}
+          src={user.profilePic ? `http://localhost:8081/uploads/${user.profilePic}.jpeg` : "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
           alt="User"
           style={userProfileStyle}
         />
