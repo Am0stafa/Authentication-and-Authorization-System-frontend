@@ -62,12 +62,13 @@ const Register = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      console.log("File selected:", file); // Check if the file is being selected
+    if (file && file.type.startsWith("image/")) {
       setProfileImg(file);
-      const previewUrl = URL.createObjectURL(file);
-      console.log("Preview URL:", previewUrl); // Check the generated URL
-      setPreviewSrc(previewUrl);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
     } else {
       setProfileImg("");
       setPreviewSrc("");
@@ -106,7 +107,6 @@ const Register = () => {
 
       navigate("/login");
     } catch (err) {
-      
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 409) {
@@ -176,43 +176,54 @@ const Register = () => {
               <FontAwesomeIcon icon={faInfoCircle} />
               invalid email address
             </p>
-            <div style={{ marginBottom: '10px', textAlign: 'center' }}>
-            <label htmlFor="profileImg" style={{ display: 'block', fontWeight: 'bold' }}>
-              Profile Picture (optional):
-            </label>
-            <input
-              type="file"
-              id="profileImg"
-              ref={imgRef}
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-              accept="image/*"
-            />
-            <div
-              onClick={triggerFileSelectPopup}
-              style={{
-                height: '80px', // Adjusted size
-                width: '80px',  // Adjusted size
-                borderRadius: '50%',
-                background: previewSrc ? `url(${previewSrc})` : '#e0e0e0',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                cursor: 'pointer',
-                border: '2px dashed #cccccc',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '10px auto', // Centered horizontally
-              }}
-            >
-              {!previewSrc && (
-                <FontAwesomeIcon
-                  icon={faUpload}
-                  style={{ fontSize: '24px', color: '#666666' }}
-                />
-              )}
+            <div style={{ marginBottom: "10px", textAlign: "center" }}>
+              <label
+                htmlFor="profileImg"
+                style={{ display: "block", fontWeight: "bold" }}
+              >
+                Profile Picture (optional):
+              </label>
+              <input
+                type="file"
+                id="profileImg"
+                ref={imgRef}
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+                accept="image/*"
+              />
+              <div
+                onClick={triggerFileSelectPopup}
+                style={{
+                  height: "80px",
+                  width: "80px",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  border: "2px dashed #cccccc",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "10px auto",
+                  overflow: "hidden", // Ensure the image doesn't escape the circular boundary
+                }}
+              >
+                {previewSrc ? (
+                  <img
+                    src={previewSrc}
+                    alt="Profile Preview"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover", // This will cover the area, cropping the image if necessary
+                    }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faUpload}
+                    style={{ fontSize: "24px", color: "#666666" }}
+                  />
+                )}
+              </div>
             </div>
-          </div>
 
             <label htmlFor="password">
               Password:
@@ -305,4 +316,3 @@ const Register = () => {
 };
 
 export default Register;
-
