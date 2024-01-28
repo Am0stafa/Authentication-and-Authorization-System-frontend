@@ -3,6 +3,7 @@ import { faUpload, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import axios from "../api/axios";
 
 const ProfilePage = () => {
   const imgRef = useRef();
@@ -50,8 +51,13 @@ const ProfilePage = () => {
 
   const triggerFileSelectPopup = () => imgRef.current.click();
 
-  const handelUpdatePass = () => {
-    console.log("Update password");
+  const handelUpdatePass = async () => {
+    try{
+      const response = await axios.post("/users/forgot-password", { email });
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   const goBack = () => {
