@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import QRLogin from './QRLogin';
 
 const Home = () => {
   const navigate = useNavigate();
   const logout = useLogout();
   const [user, setUser] = useState("");
+  const [sessionId, setSessionId] = useState(""); 
 
   const signOut = async () => {
     await logout();
@@ -31,6 +33,7 @@ const Home = () => {
     };
     getUser();
   }, [axiosPrivate]);
+
 
   // Inline CSS for the circular image
   const userProfileStyle = {
@@ -79,6 +82,7 @@ const Home = () => {
       <div className="flexGrow">
         <button onClick={signOut}>Sign Out</button>
       </div>
+      <QRLogin />
     </section>
   );
 };

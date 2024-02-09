@@ -20,6 +20,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [awaitingTwoFactor, setAwaitingTwoFactor] = useState(false);
+  const [qrCodeURL, setQrCodeURL] = useState("");
 
   useEffect(() => {
     userRef.current.focus();
@@ -28,6 +29,19 @@ const Login = () => {
   useEffect(() => {
     setErrMsg("");
   }, [user, pwd]);
+
+  useEffect(() => {
+    const fetchQRCode = async () => {
+      try {
+        const response = await axios.get("/auth/generate-qr-code");
+        setQrCodeURL(response.data.qrCodeURL);
+      } catch (error) {
+        console.error("Error fetching QR code:", error);
+      }
+    };
+
+    fetchQRCode();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -198,6 +212,13 @@ const Login = () => {
           <Link to="/register">Sign Up</Link>
         </span>
       </p>
+      {qrCodeURL && (
+      <div style={{ width: '40%', textAlign: 'center' }}>
+        <img src={qrCodeURL} alt="QR Code" style={{ maxWidth: '100%', borderRadius: '4px' }} />
+        <p style={{ marginTop: '1rem' }}>Log in with QR Code</p>
+        <p>Scan this with the mobile app to log in instantly.</p>
+      </div>
+    )}
     </section>
   );
 };
